@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoteEasy - Online Voting & Polling System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            color: #1a1a1a;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        header {
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d2d2d;
+            text-decoration: none;
+        }
+        .logo span {
+            color: #555555;
+        }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #444444;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #1a1a1a;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        .btn-outline {
+            background: transparent;
+            color: #2d2d2d;
+            border: 2px solid #2d2d2d;
+        }
+        .btn-outline:hover {
+            background: #2d2d2d;
+            color: white;
+        }
+        .btn-primary {
+            background: #2d2d2d;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #1a1a1a;
+            transform: translateY(-1px);
+        }
+        .hero {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        .hero-content {
+            flex: 1;
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 18px;
+            color: #555555;
+            margin-bottom: 30px;
+        }
+        .hero .btn {
+            padding: 14px 28px;
+            font-size: 18px;
+        }
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        .features {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: #1a1a1a;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+        }
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            background: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #2d2d2d;
+        }
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+        .feature-card p {
+            color: #666666;
+            font-size: 15px;
+        }
+        .active-polls {
+            background: #ffffff;
+            padding: 60px 20px;
+            margin-top: 80px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+        }
+        .polls-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .polls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .poll-card {
+            background: #f9f9f9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+        .poll-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        .poll-header {
+            background: #2d2d2d;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .poll-header h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        .poll-meta {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .poll-body {
+            padding: 25px;
+        }
+        .poll-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background: white;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            font-weight: 500;
+        }
+        .poll-option:last-child {
+            margin-bottom: 0;
+        }
+        .vote-count {
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #444;
+        }
+        .poll-footer {
+            padding: 15px 25px;
+            background: #f5f5f5;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        footer {
+            background: #1a1a1a;
+            color: #cccccc;
+            padding: 50px 20px 30px;
+            margin-top: 80px;
+        }
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        .footer-col h3 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+        .footer-col a {
+            color: #cccccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-col a:hover {
+            color: white;
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            font-size: 14px;
+            color: #999;
+        }
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero h1 {
+                font-size: 36px;
+            }
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-links {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <nav class="navbar">
+        <a href="#" class="logo">Vote<span>Easy</span></a>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Polls</a></li>
+            <li><a href="#">Create Poll</a></li>
+            <li><a href="#">Results</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+        <div class="auth-buttons">
+            <a href="#" class="btn btn-outline">Login</a>
+            <a href="#" class="btn btn-primary">Sign Up</a>
+        </div>
+    </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Make Your Voice Heard</h1>
+        <p>Create secure polls, vote instantly, and see real-time results. Simple, fast, and transparent voting for everyone.</p>
+        <a href="#" class="btn btn-primary">Start Voting Now</a>
+    </div>
+    <div class="hero-image">
+        <div style="background:#e0e0e0; width:100%; height:350px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#888; font-size:18px;">
+            [Voting Illustration]
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features">
+    <h2 class="section-title">Why Choose VoteEasy?</h2>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">Check</div>
+            <h3>Secure & Anonymous</h3>
+            <p>Your vote is encrypted and completely anonymous. We use industry-standard security to protect your privacy.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">Flash</div>
+            <h3>Real-time Results</h3>
+            <p>Watch results update instantly as votes come in. No waiting, no delays — just live data.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">Users</div>
+            <h3>Easy to Use</h3>
+            <p>Create polls in seconds. Share with a link. Vote with one click. Designed for everyone.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Active Polls -->
+<section class="active-polls">
+    <div class="polls-container">
+        <h2 class="section-title" style="color:#1a1a1a;">Active Polls</h2>
+        <div class="polls-grid">
+            <div class="poll-card">
+                <div class="poll-header">
+                    <h3>Best Programming Language 2025</h3>
+                    <div class="poll-meta">Ends in 3 days • 1,284 votes</div>
+                </div>
+                <div class="poll-body">
+                    <div class="poll-option">
+                        <span>JavaScript</span>
+                        <span class="vote-count">428</span>
+                    </div>
+                    <div class="poll-option">
+                        <span>Python</span>
+                        <span class="vote-count">392</span>
+                    </div>
+                    <div class="poll-option">
+                        <span>Rust</span>
+                        <span class="vote-count">264</span>
+                    </div>
+                    <div class="poll-option">
+                        <span>Go</span>
+                        <span class="vote-count">200</span>
+                    </div>
+                </div>
+                <div class="poll-footer">
+                    <a href="#" class="btn btn-primary btn-small">View & Vote</a>
+                </div>
+            </div>
+
+            <div class="poll-card">
+                <div class="poll-header">
+                    <h3>Favorite Coffee Type?</h3>
+                    <div class="poll-meta">Ends in 12 hours • 892 votes</div>
+                </div>
+                <div class="poll-body">
+                    <div class="poll-option">
+                        <span>Espresso</span>
+                        <span class="vote-count">312</span>
+                    </div>
+                    <div class="poll-option">
+                        <span>Latte</span>
+                        <span class="vote-count">298</span>
+                    </div>
+                    <div class="poll-option">
+                        <span>Americano</span>
+                        <span class="vote-count">182</span>
+                    </div>
+                    <div class="poll-option">
+                        <span>Cappuccino</span>
+                        <span class="vote-count">100</span>
+                    </div>
+                </div>
+                <div class="poll-footer">
+                    <a href="#" class="btn btn-primary btn-small">View & Vote</a>
+                </div>
+            </div>
+
+            <div class="poll-card">
+                <div class="poll-header">
+                    <h3>Should We Go Remote?</h3>
+                    <div class="poll-meta">Company Vote • Ends in 5 days</div>
+                </div>
+                <div class="poll-body">
+                    <div class="poll-option">
+                        <span>Yes, fully remote</span>
+                        <span class="vote-count">156</span>
+                    </div>
+                    <div class="poll-option">
+                        <span>Hybrid model</span>
+                        <span class="vote-count">203</span>
+                    </div>
+                    <div class="poll-option">
+                        <span>No, office only</span>
+                        <span class="vote-count">41</span>
+                    </div>
+                </div>
+                <div class="poll-footer">
+                    <a href="#" class="btn btn-primary btn-small">Vote Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-col">
+            <h3>VoteEasy</h3>
+            <p>The simplest way to create and participate in polls and votes online.</p>
+        </div>
+        <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#">Create Poll</a></li>
+                <li><a href="#">Browse Polls</a></li>
+                <li><a href="#">Live Results</a></li>
+                <li><a href="#">API Docs</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Company</h3>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Follow Us</h3>
+            <ul>
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">GitHub</a></li>
+                <li><a href="#">LinkedIn</a></li>
+                <li><a href="#">Discord</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="copyright">
+        &copy; 2025 VoteEasy. All rights reserved.
+    </div>
+</footer>
+</body>
+</html>
