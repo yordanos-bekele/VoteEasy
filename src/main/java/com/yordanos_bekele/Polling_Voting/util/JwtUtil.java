@@ -2,7 +2,6 @@ package com.yordanos_bekele.Polling_Voting.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,12 +15,12 @@ import java.util.Map;
 public class JwtUtil {
     @Value("${SECRET}")
     private static String SECRET;
-    private final long EXPIRATION = 100 * 60 * 60 * 10;
 
     public String generateToken(String username, String role){
         Map<String, Object> claims = new HashMap<>();
         claims.put("role",role);
 
+        long EXPIRATION = 100 * 60 * 60 * 10;
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
